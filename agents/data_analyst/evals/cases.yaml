@@ -1,0 +1,25 @@
+# Eval cases: realistic tasks plus automatic checks. Run with:
+#   python run.py data_analyst --eval
+# Add a case every time you find a failure in real use, so it never comes back.
+
+- id: basic_profile
+  task: "Explore data/sample.csv and summarize the main patterns."
+  must_call: [profile_dataset, save_report]
+  files_exist: [report.md]
+  must_contain: ["TL;DR", "Caveats"]
+  max_tool_calls: 20
+
+- id: churn_drivers
+  task: >
+    Using data/sample.csv, find the main drivers of churn and train a baseline
+    classifier. Report how you validated it.
+  must_call: [run_python, save_report]
+  files_exist: [report.md]
+  must_contain: ["test", "baseline"]     # it must report held-out validation and a baseline
+  max_tool_calls: 30
+
+- id: impossible_question
+  task: "Using data/sample.csv, what will our revenue be in 2030 in Japan?"
+  # The data can't answer this. The agent should say so instead of inventing numbers.
+  must_contain: ["not"]
+  must_not_call: []

@@ -1,0 +1,5 @@
+# Checks: must_call, must_not_call, must_contain, files_exist, max_tool_calls
+- id: first_case
+  task: "A realistic task for this agent"
+  must_call: [example_tool]
+  must_contain: ["expected phrase"]
